@@ -250,11 +250,11 @@ class Subscription extends Model
      *
      * @return void
      */
-    public function markAsCancelled($ends_at = null)
+    public function markAsCancelled($ended_at = null)
     {
         $this->fill([
             'status' => self::STATUS_CANCELLED,
-            'ends_at' => $ends_at?? Carbon::now(),
+            'ends_at' => $ended_at?? Carbon::now(),
         ])->save();
     }
 

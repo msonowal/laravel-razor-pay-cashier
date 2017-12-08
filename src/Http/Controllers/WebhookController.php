@@ -72,7 +72,7 @@ class WebhookController extends Controller
                                             ->limit(1)
                                     ->first();
         
-        $subscription->markAsCancelled($payload['end_at']);
+        $subscription->markAsCancelled($payload['ended_at']);
 
         return new Response('Webhook Handled', 200);
     }
