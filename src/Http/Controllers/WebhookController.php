@@ -1,6 +1,6 @@
 <?php
 
-namespace Msonowal\Cashier\Http\Controllers;
+namespace Msonowal\Razorpay\Cashier\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
