@@ -209,7 +209,7 @@ class Subscription extends Model
     {
         $subscription = $this->asRazorpaySubscription();
 
-        $subscription->cancel(['cancel_at_cycle_end' => $cancel_at_cycle_end]);
+        $subscription = $subscription->cancel(['cancel_at_cycle_end' => $cancel_at_cycle_end]);
         //TODO pass as currently not taking
 
         // If the user was on trial, we will set the grace period to end when the trial
@@ -220,7 +220,7 @@ class Subscription extends Model
             $ends_at = $this->trial_ends_at;
         } else {
             $ends_at = Carbon::createFromTimestamp(
-                $subscription->current_end
+                $subscription->ended_at
             );
         }
 
