@@ -197,7 +197,7 @@ class Subscription extends Model
 
     public function isCancellable()
     {
-        return ( is_null($this->ends_at)) && ($this->status != self::STATUS_CANCELLED)  && ($this->status != self::STATUS_COMPLETED);
+        return (is_null($this->ends_at)) && ($this->status != self::STATUS_CANCELLED)  && ($this->status != self::STATUS_COMPLETED);
     }
 
     /**
@@ -218,9 +218,11 @@ class Subscription extends Model
         $ends_at     = null;
         if ($this->onTrial()) {
             $ends_at = $this->trial_ends_at;
+        } elseif ($cancel_at_cycle_end == 0) {
+            $ends_at = Carbon::now();
         } else {
             $ends_at = Carbon::createFromTimestamp(
-                $subscription->ended_at
+                $subscription->current_end
             );
         }
 
@@ -306,7 +308,7 @@ class Subscription extends Model
      */
     public function markAsPending(array $payload = [])
     {
-        //$status = 
+        //$status =
         $this->fill([
             'status' => $payload['status']?? self::STATUS_PENDING,
             'charge_at' => $payload['charge_at']? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,

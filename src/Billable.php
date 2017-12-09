@@ -116,7 +116,7 @@ trait Billable
      */
     public function subscription($subscription = 'default', $include = 'valid')
     {
-        $filtered = $this->subscriptions->filter(function ($subscription, $key) use($include) {
+        $filtered = $this->subscriptions->filter(function ($subscription, $key) use ($include) {
             return ($include=='valid' && $subscription->hasValidStatus()) || $include!= 'valid';
         });
         return $filtered->sortByDesc(function ($value) {

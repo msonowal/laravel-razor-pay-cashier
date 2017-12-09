@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WebhookController extends Controller
 {
-
     protected $razorpay;
 
     /**
@@ -41,7 +40,7 @@ class WebhookController extends Controller
 
         $payload = $request->all();
 
-        if ( (! isset($payload['entity'])) || $payload['entity'] != 'event' ) {
+        if ((! isset($payload['entity'])) || $payload['entity'] != 'event') {
             //Unknown webhook as currrently configured to support only events
             return;
         }
@@ -72,7 +71,9 @@ class WebhookController extends Controller
                                             ->limit(1)
                                     ->first();
         
-        $subscription->markAsCancelled($payload['ended_at']);
+        if ($subscription->isCancellable()) {
+            $subscription->markAsCancelled($payload['ended_at']);
+        }
 
         return new Response('Webhook Handled', 200);
     }
