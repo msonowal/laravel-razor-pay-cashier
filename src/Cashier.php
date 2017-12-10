@@ -30,8 +30,9 @@ class Cashier
     /**
      * Set the currency to be used when billing Razorpay models.
      *
-     * @param  string  $currency
-     * @param  string|null  $symbol
+     * @param string      $currency
+     * @param string|null $symbol
+     *
      * @return void
      */
     public static function useCurrency($currency, $symbol = null)
@@ -44,9 +45,11 @@ class Cashier
     /**
      * Guess the currency symbol for the given currency.
      *
-     * @param  string  $currency
-     * @return string
+     * @param string $currency
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     protected static function guessCurrencySymbol($currency)
     {
@@ -80,7 +83,8 @@ class Cashier
     /**
      * Set the currency symbol to be used when formatting currency.
      *
-     * @param  string  $symbol
+     * @param string $symbol
+     *
      * @return void
      */
     public static function useCurrencySymbol($symbol)
@@ -101,7 +105,8 @@ class Cashier
     /**
      * Set the custom currency formatter.
      *
-     * @param  callable  $callback
+     * @param callable $callback
+     *
      * @return void
      */
     public static function formatCurrencyUsing(callable $callback)
@@ -112,7 +117,8 @@ class Cashier
     /**
      * Format the given amount into a displayable currency.
      *
-     * @param  int  $amount
+     * @param int $amount
+     *
      * @return string
      */
     public static function formatAmount($amount)
