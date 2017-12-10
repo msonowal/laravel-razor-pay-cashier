@@ -79,9 +79,10 @@ class SubscriptionBuilder
     /**
      * Create a new subscription builder instance.
      *
-     * @param  mixed  $owner
-     * @param  string  $name
-     * @param  string  $plan
+     * @param mixed  $owner
+     * @param string $name
+     * @param string $plan
+     *
      * @return void
      */
     public function __construct($owner, $name, $plan)
@@ -99,7 +100,8 @@ class SubscriptionBuilder
     /**
      * Specify the quantity of the subscription.
      *
-     * @param  int  $quantity
+     * @param int $quantity
+     *
      * @return $this
      */
     public function quantity($quantity)
@@ -112,7 +114,8 @@ class SubscriptionBuilder
     /**
      * Specify the total_count of the subscription.
      *
-     * @param  int  $total_count
+     * @param int $total_count
+     *
      * @return $this
      */
     public function totalCount($total_count)
@@ -125,7 +128,8 @@ class SubscriptionBuilder
     /**
      * Specify whether customer should be notified through razorpay for various events.
      *
-     * @param  boolean  $customer_notify
+     * @param bool $customer_notify
+     *
      * @return $this
      */
     public function customerNotify($customer_notify = true)
@@ -135,11 +139,11 @@ class SubscriptionBuilder
         return $this;
     }
 
-
     /**
      * Specify the number of days of the trial.
      *
-     * @param  int  $trialDays
+     * @param int $trialDays
+     *
      * @return $this
      */
     public function trialDays($trialDays)
@@ -152,7 +156,8 @@ class SubscriptionBuilder
     /**
      * Specify the ending date of the trial.
      *
-     * @param  \Carbon\Carbon  $trialUntil
+     * @param \Carbon\Carbon $trialUntil
+     *
      * @return $this
      */
     public function trialUntil(Carbon $trialUntil)
@@ -175,9 +180,10 @@ class SubscriptionBuilder
     }
 
     /**
-     * The coupon to apply to a new subscription. //currently not supported in razorpay end to store coupon which can be implemented in client side
+     * The coupon to apply to a new subscription. //currently not supported in razorpay end to store coupon which can be implemented in client side.
      *
-     * @param  string  $coupon
+     * @param string $coupon
+     *
      * @return $this
      */
     public function withCoupon($coupon)
@@ -190,7 +196,8 @@ class SubscriptionBuilder
     /**
      * The notes to apply to a new subscription.
      *
-     * @param  array  $metadata
+     * @param array $metadata
+     *
      * @return $this
      */
     public function withNotes(array $notes)
@@ -203,9 +210,10 @@ class SubscriptionBuilder
     public function getStartAtDate()
     {
         $trialEndsAt = null;
-        if (! $this->skipTrial) {
+        if (!$this->skipTrial) {
             $trialEndsAt = $this->trialExpires;
         }
+
         return $trialEndsAt;
     }
 
@@ -221,29 +229,30 @@ class SubscriptionBuilder
                         ->create($this->buildPayload());
 
         return $this->owner->subscriptions()->create([
-            'name' => $this->name,
-            'razorpay_id'   =>  $subscription->id,
-            'razorpay_plan' => $this->plan,
-            'quantity'      =>  $this->quantity,
-            'total_count' => $this->total_count,
-            'status'        =>  $subscription->status,
-            'total_count'   =>  $subscription->total_count,
-            'paid_count'   =>  $subscription->paid_count,
-            'auth_attempts' =>  $subscription->auth_attempts,
+            'name'           => $this->name,
+            'razorpay_id'    => $subscription->id,
+            'razorpay_plan'  => $this->plan,
+            'quantity'       => $this->quantity,
+            'total_count'    => $this->total_count,
+            'status'         => $subscription->status,
+            'total_count'    => $subscription->total_count,
+            'paid_count'     => $subscription->paid_count,
+            'auth_attempts'  => $subscription->auth_attempts,
             'trial_ends_at'  => $this->getStartAtDate(),
-            'ends_at' => null,
+            'ends_at'        => null,
         ]);
     }
 
     /**
      * Get the Razorpay customer instance for the current user and token.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return \Razorpay\Customer
      */
     protected function getRazorpayCustomer(array $options = [])
     {
-        if (! $this->owner->razorpay_id) {
+        if (!$this->owner->razorpay_id) {
             $customer = $this->owner->createAsRazorpayCustomer($options);
         } else {
             $customer = $this->owner->asRazorpayCustomer();
@@ -260,13 +269,13 @@ class SubscriptionBuilder
     protected function buildPayload()
     {
         return array_filter([
-            'plan_id' => $this->plan,
-            'customer_id'   =>  $this->owner->razorpay_id,
+            'plan_id'         => $this->plan,
+            'customer_id'     => $this->owner->razorpay_id,
             'customer_notify' => $this->customer_notify,
-            'quantity'      =>  $this->quantity,
-            'total_count' => $this->total_count,
-            'start_at'  => $this->getStartAtDate(),
-            'notes'     =>  $this->notes,
+            'quantity'        => $this->quantity,
+            'total_count'     => $this->total_count,
+            'start_at'        => $this->getStartAtDate(),
+            'notes'           => $this->notes,
         ]);
     }
 
@@ -286,7 +295,7 @@ class SubscriptionBuilder
         }
     }
 
-    /**
+    /*
      * Get the tax percentage for the Razorpay payload.
      *
      * @return int|null

@@ -3,7 +3,6 @@
 namespace Msonowal\Razorpay\Cashier;
 
 use Carbon\Carbon;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
@@ -18,9 +17,9 @@ class Subscription extends Model
     const STATUS_COMPLETED = 'completed';
 
     const VALID_STATUSES = [
-        self::STATUS_AUTHENTICATED, self::STATUS_ACTIVE, self::STATUS_PENDING, self::STATUS_HALTED, self::STATUS_CANCELLED, self::STATUS_COMPLETED
+        self::STATUS_AUTHENTICATED, self::STATUS_ACTIVE, self::STATUS_PENDING, self::STATUS_HALTED, self::STATUS_CANCELLED, self::STATUS_COMPLETED,
     ];
-    
+
     /**
      * The attributes that are not mass assignable.
      *
@@ -75,7 +74,7 @@ class Subscription extends Model
     {
         $model = getenv('RAZORPAY_MODEL') ?: config('services.razorpay.model', 'App\\User');
 
-        $model = new $model;
+        $model = new $model();
 
         return $this->belongsTo(get_class($model), $model->getForeignKey());
     }
@@ -112,7 +111,7 @@ class Subscription extends Model
      */
     public function cancelled()
     {
-        return ! is_null($this->ends_at) || $this->status == self::STATUS_CANCELLED;
+        return !is_null($this->ends_at) || $this->status == self::STATUS_CANCELLED;
     }
 
     /**
@@ -122,7 +121,7 @@ class Subscription extends Model
      */
     public function onTrial()
     {
-        if (! is_null($this->trial_ends_at)) {
+        if (!is_null($this->trial_ends_at)) {
             return Carbon::now()->lt($this->trial_ends_at);
         } else {
             return false;
@@ -136,7 +135,7 @@ class Subscription extends Model
      */
     public function onGracePeriod()
     {
-        if (! is_null($endsAt = $this->ends_at)) {
+        if (!is_null($endsAt = $this->ends_at)) {
             return Carbon::now()->lt(Carbon::instance($endsAt));
         } else {
             return false;
@@ -146,7 +145,8 @@ class Subscription extends Model
     /**
      * Increment the quantity of the subscription.
      *
-     * @param  int  $count
+     * @param int $count
+     *
      * @return $this
      */
     public function incrementQuantity($count = 1)
@@ -159,7 +159,8 @@ class Subscription extends Model
     /**
      * Decrement the quantity of the subscription.
      *
-     * @param  int  $count
+     * @param int $count
+     *
      * @return $this
      */
     public function decrementQuantity($count = 1)
@@ -197,7 +198,7 @@ class Subscription extends Model
 
     public function isCancellable()
     {
-        return (is_null($this->ends_at)) && ($this->status != self::STATUS_CANCELLED)  && ($this->status != self::STATUS_COMPLETED);
+        return (is_null($this->ends_at)) && ($this->status != self::STATUS_CANCELLED) && ($this->status != self::STATUS_COMPLETED);
     }
 
     /**
@@ -215,7 +216,7 @@ class Subscription extends Model
         // If the user was on trial, we will set the grace period to end when the trial
         // would have ended. Otherwise, we'll retrieve the end of the billing period
         // period and make that the end of the grace period for this current user.
-        $ends_at     = null;
+        $ends_at = null;
         if ($this->onTrial()) {
             $ends_at = $this->trial_ends_at;
         } elseif ($cancel_at_cycle_end == 0) {
@@ -255,8 +256,8 @@ class Subscription extends Model
     public function markAsCancelled($ended_at = null)
     {
         $this->fill([
-            'status' => self::STATUS_CANCELLED,
-            'ends_at' => $ended_at?? Carbon::now(),
+            'status'  => self::STATUS_CANCELLED,
+            'ends_at' => $ended_at ?? Carbon::now(),
         ])->save();
     }
 
@@ -268,8 +269,8 @@ class Subscription extends Model
     public function markAsCompleted($ended_at = null)
     {
         $this->fill([
-            'status' => self::STATUS_COMPLETED,
-            'ends_at' => $ended_at?? Carbon::now(),
+            'status'  => self::STATUS_COMPLETED,
+            'ends_at' => $ended_at ?? Carbon::now(),
         ])->save();
     }
 
@@ -281,12 +282,12 @@ class Subscription extends Model
     public function markAsCharged(array $payload)
     {
         $this->fill([
-            'status' => $payload['status']?? self::STATUS_ACTIVE,
-            'charge_at' => $payload['charge_at'] ? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
-            'auth_attempts' => $payload['auth_attempts']?? $this->auth_attempts,
-            'trial_ends_at'  =>  $payload['start_at'] ? Carbon::createFromTimestamp($payload['start_at']) : $this->trial_ends_at,
-            'paid_count' => $payload['paid_count']?? $this->paid_count,
-            'total_count' => $payload['total_count']?? $this->total_count,
+            'status'         => $payload['status'] ?? self::STATUS_ACTIVE,
+            'charge_at'      => $payload['charge_at'] ? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
+            'auth_attempts'  => $payload['auth_attempts'] ?? $this->auth_attempts,
+            'trial_ends_at'  => $payload['start_at'] ? Carbon::createFromTimestamp($payload['start_at']) : $this->trial_ends_at,
+            'paid_count'     => $payload['paid_count'] ?? $this->paid_count,
+            'total_count'    => $payload['total_count'] ?? $this->total_count,
         ])->save();
     }
 
@@ -310,9 +311,9 @@ class Subscription extends Model
     {
         //$status =
         $this->fill([
-            'status' => $payload['status']?? self::STATUS_PENDING,
-            'charge_at' => $payload['charge_at']? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
-            'auth_attempts' => $payload['auth_attempts']?? $this->auth_attempts,
+            'status'        => $payload['status'] ?? self::STATUS_PENDING,
+            'charge_at'     => $payload['charge_at'] ? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
+            'auth_attempts' => $payload['auth_attempts'] ?? $this->auth_attempts,
         ])->save();
     }
 
@@ -324,9 +325,9 @@ class Subscription extends Model
     public function markAsHalted(array $payload)
     {
         $this->fill([
-            'status' => $payload['status']?? self::STATUS_HALTED,
-            'charge_at' => $payload['charge_at']? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
-            'auth_attempts' => $payload['auth_attempts']?? $this->auth_attempts,
+            'status'        => $payload['status'] ?? self::STATUS_HALTED,
+            'charge_at'     => $payload['charge_at'] ? Carbon::createFromTimestamp($payload['charge_at']) : $this->charge_at,
+            'auth_attempts' => $payload['auth_attempts'] ?? $this->auth_attempts,
         ])->save();
     }
 
@@ -334,11 +335,10 @@ class Subscription extends Model
      * Get the subscription as a Razorpay subscription object.
      *
      * @return \Razorpay\Api\Subscription
-     *
      */
     public function asRazorpaySubscription()
     {
-        $razorpay       = $this->getRazorpayClient();
+        $razorpay = $this->getRazorpayClient();
 
         return $razorpay->subscription->fetch($this->razorpay_id);
     }

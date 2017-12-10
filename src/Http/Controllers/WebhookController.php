@@ -18,7 +18,7 @@ class WebhookController extends Controller
      */
     public function __construct()
     {
-        $this->razorpay =  resolve('razorpay');
+        $this->razorpay = resolve('razorpay');
     }
 
     private function validateSignature()
@@ -31,7 +31,8 @@ class WebhookController extends Controller
     /**
      * Handle a Razorpay webhook call.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handleWebhook(Request $request)
@@ -40,7 +41,7 @@ class WebhookController extends Controller
 
         $payload = $request->all();
 
-        if ((! isset($payload['entity'])) || $payload['entity'] != 'event') {
+        if ((!isset($payload['entity'])) || $payload['entity'] != 'event') {
             //Unknown webhook as currrently configured to support only events
             return;
         }
@@ -57,20 +58,21 @@ class WebhookController extends Controller
     /**
      * Handle a cancelled Razorpay subscription.
      *
-     * @param  array  $payload
+     * @param array $payload
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function handleSubscriptionCancelled(array $payload)
     {
-        $payload                =   $payload['payload']['subscription']['entity'];
-        $user                   =   $this->getUserByRazorpayId($payload['customer_id']);
+        $payload = $payload['payload']['subscription']['entity'];
+        $user = $this->getUserByRazorpayId($payload['customer_id']);
 
-        $subscription           =   $user
+        $subscription = $user
                                     ->subscriptions()
                                     ->where('razorpay_id', $payload['id'])
                                             ->limit(1)
                                     ->first();
-        
+
         if ($subscription->isCancellable()) {
             $subscription->markAsCancelled($payload['ended_at']);
         }
@@ -81,24 +83,26 @@ class WebhookController extends Controller
     /**
      * Get the billable entity instance by Razorpay ID.
      *
-     * @param  string  $razorpayId
+     * @param string $razorpayId
+     *
      * @return \Msonowal\Cashier\Billable
      */
     protected function getUserByRazorpayId($razorpayId)
     {
         $model = getenv('RAZORPAY_MODEL') ?: config('services.razorpay.model');
 
-        return (new $model)->byRazorpayId($razorpayId)->first();
+        return (new $model())->byRazorpayId($razorpayId)->first();
     }
 
     /**
      * Handle calls to missing methods on the controller.
      *
-     * @param  array  $parameters
+     * @param array $parameters
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function missingMethod($parameters = [])
     {
-        return new Response;
+        return new Response();
     }
 }
