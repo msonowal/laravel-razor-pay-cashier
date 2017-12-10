@@ -9,6 +9,7 @@
 [![Total Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/downloads?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
 [![Monthly Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/monthly?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
 [![Daily Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/daily?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+[![HitCount](http://hits.dwyl.io/msonowal/laravel-razorpay-cashier.svg)](http://hits.dwyl.io/msonowal/laravel-razorpay-cashier)
 
 </p>
 
