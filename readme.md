@@ -61,7 +61,7 @@ Thank you for considering contributing to the Cashier. You can read the contribu
 
 ## License
 
-Laravel Cashier is open-sourced software licensed under the [MIT license](license.md).
+Laravel Cashier is open-sourced software licensed under the [MIT license](LICENSE.txt).
 
 
 # Found any bugs? or improvement open an issue or send me a PR
