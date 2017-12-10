@@ -2,12 +2,8 @@
 
 namespace Msonowal\Razorpay\Cashier;
 
-use Exception;
 use Carbon\Carbon;
-use InvalidArgumentException;
-use Illuminate\Support\Collection;
-use Razorpay\Api\Customer as RazorpayCustomer;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Exception;
 
 trait Billable
 {
@@ -24,11 +20,12 @@ trait Billable
     /**
      * Refund a customer for a payment.
      *
-     * @param  string  $id
-     * @param  array  $refundAmount
-     * @return \Razorpay\Api\Refund
+     * @param string $id
+     * @param array  $refundAmount
      *
      * @throws \InvalidArgumentException
+     *
+     * @return \Razorpay\Api\Refund
      */
     public function refund($id, $refundAmount = null)
     {
@@ -42,8 +39,9 @@ trait Billable
     /**
      * Begin creating a new subscription.
      *
-     * @param  string  $subscription
-     * @param  string  $plan
+     * @param string $subscription
+     * @param string $plan
+     *
      * @return \Msonowal\Cashier\SubscriptionBuilder
      */
     public function newSubscription($subscription, $plan)
@@ -54,8 +52,9 @@ trait Billable
     /**
      * Determine if the Razorpay model is on trial.
      *
-     * @param  string  $subscription
-     * @param  string|null  $plan
+     * @param string      $subscription
+     * @param string|null $plan
+     *
      * @return bool
      */
     public function onTrial($subscription = 'default', $plan = null)
@@ -87,8 +86,9 @@ trait Billable
     /**
      * Determine if the Razorpay model has a given subscription.
      *
-     * @param  string  $subscription
-     * @param  string|null  $plan
+     * @param string      $subscription
+     * @param string|null $plan
+     *
      * @return bool
      */
     public function subscribed($subscription = 'default', $plan = null)
@@ -110,15 +110,17 @@ trait Billable
     /**
      * Get a subscription instance by name.
      *
-     * @param  string  $subscription
-     * @param string $include |all|valid
+     * @param string $subscription
+     * @param string $include      |all|valid
+     *
      * @return \Msonowal\Cashier\Subscription|null
      */
     public function subscription($subscription = 'default', $include = 'valid')
     {
         $filtered = $this->subscriptions->filter(function ($subscription, $key) use ($include) {
-            return ($include=='valid' && $subscription->hasValidStatus()) || $include!= 'valid';
+            return ($include == 'valid' && $subscription->hasValidStatus()) || $include != 'valid';
         });
+
         return $filtered->sortByDesc(function ($value) {
             return $value->created_at->getTimestamp();
         })
@@ -147,6 +149,7 @@ trait Billable
         if ($this->razorpay_id) {
             try {
                 $params['customer_id'] = $this->razorpay_id;
+
                 return $this->getRazorpayClient()->invoice->create($params)->issue(); // Ref: razorpay.com/docs/invoices for request params example
             } catch (Exception $e) {
                 return false;
@@ -159,15 +162,16 @@ trait Billable
     /**
      * Determine if the Razorpay model is actively subscribed to one of the given plans.
      *
-     * @param  array|string  $plans
-     * @param  string  $subscription
+     * @param array|string $plans
+     * @param string       $subscription
+     *
      * @return bool
      */
     public function subscribedToPlan($plans, $subscription = 'default')
     {
         $subscription = $this->subscription($subscription);
 
-        if (! $subscription || ! $subscription->valid()) {
+        if (!$subscription || !$subscription->valid()) {
             return false;
         }
 
@@ -183,12 +187,13 @@ trait Billable
     /**
      * Determine if the entity is on the given plan.
      *
-     * @param  string  $plan
+     * @param string $plan
+     *
      * @return bool
      */
     public function onPlan($plan)
     {
-        return ! is_null($this->subscriptions->first(function ($value) use ($plan) {
+        return !is_null($this->subscriptions->first(function ($value) use ($plan) {
             return $value->razorpay_plan === $plan && $value->valid();
         }));
     }
@@ -200,14 +205,15 @@ trait Billable
      */
     public function hasRazorpayId()
     {
-        return ! is_null($this->razorpay_id);
+        return !is_null($this->razorpay_id);
     }
 
     /**
      * Create a Razorpay customer for the given Razorpay model.
      *
-     * @param  string  $token
-     * @param  array  $options
+     * @param string $token
+     * @param array  $options
+     *
      * @return \Razorpay\Customer
      */
     public function createAsRazorpayCustomer(array $options = [])
@@ -225,7 +231,6 @@ trait Billable
 
         $options = array_key_exists('fail_existing', $options)
                 ? $options : array_merge($options, ['fail_existing' => 1]);
-                
 
         $options = array_key_exists('notes', $options)
                 ? $options : array_merge($options, ['notes' => array_except($options, $customerFields)]);

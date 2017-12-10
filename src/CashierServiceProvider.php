@@ -25,6 +25,7 @@ class CashierServiceProvider extends ServiceProvider
     {
         $this->app->singleton('razorpay', function ($app) {
             $razorpayConfig = config('services.razorpay');
+
             return new Razorpay(
                     $razorpayConfig['key'],
                     $razorpayConfig['secret']
