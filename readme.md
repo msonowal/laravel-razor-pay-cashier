@@ -3,7 +3,7 @@
 
 <p align="center">
 
-![StlyeCI](https://styleci.io/repos/113607269/shield)
+[![StlyeCI](https://styleci.io/repos/113607269/shield)](https://styleci.io/repos/113607269)
 [![Latest Stable Version](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/v/stable?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
 [![License](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/license?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
 [![Total Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/downloads?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
