@@ -52,7 +52,7 @@ class Cashier
     {
         switch (strtolower($currency)) {
             case 'INR':
-                return '₹'
+                return '₹';
                 break;
             case 'USD':
             case 'AUD':
