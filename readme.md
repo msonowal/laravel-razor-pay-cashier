@@ -2,12 +2,13 @@
 ## Laravel Razorpay Cashier
 
 <p align="center">
-    
-[![Latest Stable Version](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/v/stable)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
-[![License](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/license)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
-[![Total Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/downloads)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
-[![Monthly Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/monthly)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
-[![Daily Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/daily)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+
+![StlyeCI](https://styleci.io/repos/113607269/shield)
+[![Latest Stable Version](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/v/stable?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+[![License](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/license?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+[![Total Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/downloads?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+[![Monthly Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/monthly?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
+[![Daily Downloads](https://poser.pugx.org/msonowal/laravel-razor-pay-cashier/d/daily?format=flat-square)](https://packagist.org/packages/msonowal/laravel-razor-pay-cashier)
 
 </p>
 
