@@ -21,11 +21,12 @@ class WebhookController extends Controller
         $this->razorpay = resolve('razorpay');
     }
 
-    private function validateSignature()
+    private function validateSignature(Request $request)
     {
-        // $this->razorpay->utility->verifyWebhookSignature($webhookBody, $webhookSignature, $webhookSecret);
-        //else raise exception and make it handle in handler na convert to response
-        return true;
+        $webhookSecret      =   config('services.razorpay.webhook_secret');
+        $webhookSignature   =   $request->header('X-Razorpay-Signature');
+        $payload            =   $request->getContent();
+        $this->razorpay->utility->verifyWebhookSignature($payload, $webhookSignature, $webhookSecret);
     }
 
     /**
