@@ -2,7 +2,6 @@
 
 namespace Msonowal\Razorpay\Cashier\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,9 +22,9 @@ class WebhookController extends Controller
 
     private function validateSignature(Request $request)
     {
-        $webhookSecret      =   config('services.razorpay.webhook_secret');
-        $webhookSignature   =   $request->header('X-Razorpay-Signature');
-        $payload            =   $request->getContent();
+        $webhookSecret = config('services.razorpay.webhook_secret');
+        $webhookSignature = $request->header('X-Razorpay-Signature');
+        $payload = $request->getContent();
         $this->razorpay->utility->verifyWebhookSignature($payload, $webhookSignature, $webhookSecret);
     }
 
