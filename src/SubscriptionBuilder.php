@@ -210,7 +210,7 @@ class SubscriptionBuilder
     public function getStartAtDate()
     {
         $trialEndsAt = null;
-        if (! $this->skipTrial) {
+        if (!$this->skipTrial) {
             $trialEndsAt = $this->trialExpires;
         }
 
@@ -287,7 +287,7 @@ class SubscriptionBuilder
     protected function getTrialEndForPayload()
     {
         if ($this->skipTrial) {
-            return null;
+            return;
         }
 
         if ($this->trialExpires) {
