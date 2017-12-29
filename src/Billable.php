@@ -140,7 +140,7 @@ trait Billable
     public function subscriptionWithinBillingCycle($subscription = 'default')
     {
         $filtered = $this->subscriptions->filter(function ($subscription, $key) {
-            return (!$subscription->onTrial() && $subscription->isUnderBillingCycle());
+            return !$subscription->onTrial() && $subscription->isUnderBillingCycle();
         });
 
         return $filtered->sortByDesc(function ($value) {
