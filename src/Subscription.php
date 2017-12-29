@@ -303,8 +303,10 @@ class Subscription extends Model
         if ($this->status == self::STATUS_CREATED) {
             $this->status = self::STATUS_AUTHENTICATED;
             $this->save();
+
             return true;
         }
+
         return false;
     }
 
