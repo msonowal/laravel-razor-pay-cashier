@@ -20,6 +20,10 @@ class Subscription extends Model
         self::STATUS_AUTHENTICATED, self::STATUS_ACTIVE, self::STATUS_PENDING, self::STATUS_HALTED, self::STATUS_CANCELLED, self::STATUS_COMPLETED,
     ];
 
+    const UNDER_BILLING_STATUSES = [
+        self::STATUS_ACTIVE, self::STATUS_PENDING, self::STATUS_HALTED, self::STATUS_CANCELLED, self::STATUS_COMPLETED,
+    ];
+
     /**
      * The attributes that are not mass assignable.
      *
@@ -79,9 +83,14 @@ class Subscription extends Model
         return $this->belongsTo(get_class($model), $model->getForeignKey());
     }
 
-    public function hasValidStatus()
+    public function hasValidStatus() : bool
     {
         return in_array($this->status, self::VALID_STATUSES);
+    }
+
+    public function isUnderBillingCycle() : bool
+    {
+        return Carbon::now()->gte($this->trial_ends_at) && in_array($this->status, self::UNDER_BILLING_STATUSES);
     }
 
     /**
@@ -89,7 +98,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function valid()
+    public function valid() : bool
     {
         return $this->active() || $this->onTrial() || $this->onGracePeriod();
     }
@@ -99,7 +108,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function active()
+    public function active() : bool
     {
         return is_null($this->ends_at) || $this->onGracePeriod();
     }
@@ -109,20 +118,30 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function cancelled()
+    public function cancelled() : bool
     {
         return !is_null($this->ends_at) || $this->status == self::STATUS_CANCELLED;
     }
 
     /**
-     * Determine if the subscription is within its trial period.
+     * Determine if the subscription is authenticated.
      *
      * @return bool
      */
-    public function onTrial()
+    public function authenticated() : bool
+    {
+        return $this->status == self::STATUS_AUTHENTICATED;
+    }
+
+    /**
+     * Determine if the subscription is within its trial period whcih has also passed the authenticated state.
+     *
+     * @return bool
+     */
+    public function onTrial() : bool
     {
         if (!is_null($this->trial_ends_at)) {
-            return Carbon::now()->lt($this->trial_ends_at);
+            return Carbon::now()->lt($this->trial_ends_at) && $this->authenticated();
         } else {
             return false;
         }
@@ -133,7 +152,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function onGracePeriod()
+    public function onGracePeriod() : bool
     {
         if (!is_null($endsAt = $this->ends_at)) {
             return Carbon::now()->lt(Carbon::instance($endsAt));
@@ -272,6 +291,21 @@ class Subscription extends Model
             'status'  => self::STATUS_COMPLETED,
             'ends_at' => $ended_at ?? Carbon::now(),
         ])->save();
+    }
+
+    /**
+     * Mark the subscription as Authenticated.
+     *
+     * @return void
+     */
+    public function markAsAuthenticated() : bool
+    {
+        if ($this->status == self::STATUS_CREATED) {
+            $this->status = self::STATUS_AUTHENTICATED;
+            $this->save();
+            return true;
+        }
+        return false;
     }
 
     /**

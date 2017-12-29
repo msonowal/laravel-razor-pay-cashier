@@ -130,6 +130,28 @@ trait Billable
     }
 
     /**
+     * Get a subscription instance by name and whose billing has started i.e. without trial.
+     *
+     * @param string $subscription
+     * @param string $include      |all|valid
+     *
+     * @return \Msonowal\Cashier\Subscription|null
+     */
+    public function subscriptionWithinBillingCycle($subscription = 'default')
+    {
+        $filtered = $this->subscriptions->filter(function ($subscription, $key) {
+            return (!$subscription->onTrial() && $subscription->isUnderBillingCycle());
+        });
+
+        return $filtered->sortByDesc(function ($value) {
+            return $value->created_at->getTimestamp();
+        })
+        ->first(function ($value) use ($subscription) {
+            return $value->name === $subscription;
+        });
+    }
+
+    /**
      * Get all of the subscriptions for the Razorpay model.
      *
      * @return \Illuminate\Database\Eloquent\Collection
