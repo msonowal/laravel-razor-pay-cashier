@@ -90,7 +90,7 @@ class Subscription extends Model
 
     public function isUnderBillingCycle() : bool
     {
-        return !$this->onTrial() && in_array($this->status, self::UNDER_BILLING_STATUSES);
+        return !$this->onTrial() && $this->active() && in_array($this->status, self::UNDER_BILLING_STATUSES);
     }
 
     /**
