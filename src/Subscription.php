@@ -90,7 +90,7 @@ class Subscription extends Model
 
     public function isUnderBillingCycle() : bool
     {
-        return Carbon::now()->gte($this->trial_ends_at) && in_array($this->status, self::UNDER_BILLING_STATUSES);
+        return !$this->onTrial() && in_array($this->status, self::UNDER_BILLING_STATUSES);
     }
 
     /**
