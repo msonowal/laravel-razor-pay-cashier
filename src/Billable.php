@@ -108,6 +108,30 @@ trait Billable
     }
 
     /**
+     * Determine if the Razorpay model has a given subscription whose billing cycle is started.
+     *
+     * @param string      $subscription
+     * @param string|null $plan
+     *
+     * @return bool
+     */
+    public function subscribedWithinBillingCycle($subscription = 'default', $plan = null)
+    {
+        $subscription = $this->subscriptionWithinBillingCycle($subscription);
+
+        if (is_null($subscription)) {
+            return false;
+        }
+
+        if (is_null($plan)) {
+            return $subscription->isUnderBillingCycle();
+        }
+
+        return $subscription->isUnderBillingCycle() &&
+               $subscription->razorpay_plan === $plan;
+    }
+
+    /**
      * Get a subscription instance by name.
      *
      * @param string $subscription
