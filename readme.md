@@ -24,7 +24,7 @@ Laravel Cashier inspired Razorpay Cashier provides an expressive, fluent interfa
 
 Next, register the service provider in your `config/app.php` configuration file.
 
-`Msonowal\Cashier\CashierServiceProvider`
+`Msonowal\Razorpay\Cashier\CashierServiceProvider`
 
 ### Environment Configurations
 define these keys in services
