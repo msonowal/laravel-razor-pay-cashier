@@ -160,6 +160,16 @@ class Subscription extends Model
             return false;
         }
     }
+    
+    /**
+     * Determine if the subscription is on halt i.e. unable to charge the card or payments.
+     *
+     * @return bool
+     */
+    public function onHaltPeriod() : bool
+    {
+        return $this->status == self::STATUS_HALTED;
+    }
 
     /**
      * Increment the quantity of the subscription.
