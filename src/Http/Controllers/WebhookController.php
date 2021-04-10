@@ -4,8 +4,8 @@ namespace Msonowal\Razorpay\Cashier\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class WebhookController extends Controller
 {

@@ -27,9 +27,9 @@ class CashierServiceProvider extends ServiceProvider
             $razorpayConfig = config('services.razorpay');
 
             return new Razorpay(
-                    $razorpayConfig['key'],
-                    $razorpayConfig['secret']
-                );
+                $razorpayConfig['key'],
+                $razorpayConfig['secret']
+            );
         });
     }
 }
