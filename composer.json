@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "illuminate/http": "^7.0 || ^8.0",
-        "illuminate/routing": "^7.0 || ^8.0"",
+        "illuminate/routing": "^7.0 || ^8.0",
         "mockery/mockery": "^1.4.2",
         "vlucas/phpdotenv": "^5.2"
     },
