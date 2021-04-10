@@ -14,18 +14,18 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "illuminate/database": "~5.8",
-        "illuminate/support": "~5.8",
-        "nesbot/carbon": "~2.0",
+        "php": ">=7.2",
+        "illuminate/database": "^6.0 || ^7.0 || ^8.0",
+        "illuminate/support": "^6.0 || ^7.0 || ^8.0",
+        "nesbot/carbon": "^2.31",
         "razorpay/razorpay": "^2.2",
-        "symfony/http-kernel": "^4.2"
+        "symfony/http-kernel": "^4.4 || ^5.0"
     },
     "require-dev": {
-        "illuminate/http": "~5.3",
-        "illuminate/routing": "~5.3",
-        "mockery/mockery": "~1.0",
-        "vlucas/phpdotenv": "~2.0"
+        "illuminate/http": "^6.0 || ^7.0 || ^8.0",
+        "illuminate/routing": "^6.0 || ^7.0 || ^8.0",
+        "mockery/mockery": "^1.4.2",
+        "vlucas/phpdotenv": "^5.2"
     },
     "autoload": {
         "psr-4": {

@@ -5,6 +5,7 @@ namespace Msonowal\Razorpay\Cashier\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class WebhookController extends Controller
 {
@@ -46,7 +47,7 @@ class WebhookController extends Controller
             return;
         }
 
-        $method = 'handle'.studly_case(str_replace('.', '_', $payload['event']));
+        $method = 'handle'.Str::studly(str_replace('.', '_', $payload['event']));
 
         if (method_exists($this, $method)) {
             return $this->{$method}($payload);
