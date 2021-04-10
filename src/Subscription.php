@@ -83,12 +83,12 @@ class Subscription extends Model
         return $this->belongsTo(get_class($model), $model->getForeignKey());
     }
 
-    public function hasValidStatus() : bool
+    public function hasValidStatus(): bool
     {
         return in_array($this->status, self::VALID_STATUSES);
     }
 
-    public function isUnderBillingCycle() : bool
+    public function isUnderBillingCycle(): bool
     {
         return !$this->onTrial() && $this->active() && in_array($this->status, self::UNDER_BILLING_STATUSES);
     }
@@ -98,7 +98,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return $this->active() || $this->onTrial() || $this->onGracePeriod();
     }
@@ -108,7 +108,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function active() : bool
+    public function active(): bool
     {
         return is_null($this->ends_at) || $this->onGracePeriod();
     }
@@ -118,7 +118,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function cancelled() : bool
+    public function cancelled(): bool
     {
         return !is_null($this->ends_at) || $this->status == self::STATUS_CANCELLED;
     }
@@ -128,7 +128,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function authenticated() : bool
+    public function authenticated(): bool
     {
         return $this->status == self::STATUS_AUTHENTICATED;
     }
@@ -138,7 +138,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function onTrial() : bool
+    public function onTrial(): bool
     {
         if (!is_null($this->trial_ends_at)) {
             return Carbon::now()->lt($this->trial_ends_at) && $this->authenticated();
@@ -152,7 +152,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function onGracePeriod() : bool
+    public function onGracePeriod(): bool
     {
         if (!is_null($endsAt = $this->ends_at)) {
             return Carbon::now()->lt(Carbon::instance($endsAt));
@@ -166,7 +166,7 @@ class Subscription extends Model
      *
      * @return bool
      */
-    public function onHaltPeriod() : bool
+    public function onHaltPeriod(): bool
     {
         return $this->status == self::STATUS_HALTED;
     }
@@ -308,7 +308,7 @@ class Subscription extends Model
      *
      * @return void
      */
-    public function markAsAuthenticated() : bool
+    public function markAsAuthenticated(): bool
     {
         if ($this->status == self::STATUS_CREATED) {
             $this->status = self::STATUS_AUTHENTICATED;
