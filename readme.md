@@ -27,7 +27,7 @@ Next, register the service provider in your `config/app.php` configuration file.
 `Msonowal\Razorpay\Cashier\CashierServiceProvider`
 
 ### Environment Configurations
-define these keys in services
+define these keys in `config/services.php`
 ```
 'razorpay' => [
     'model'     =>  App\Models\User::class,
