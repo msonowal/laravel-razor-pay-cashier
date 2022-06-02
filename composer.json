@@ -15,11 +15,11 @@
     ],
     "require": {
         "php": ">=7.2",
-        "illuminate/database": "^6.0 || ^7.0 || ^8.0",
+        "illuminate/database": "^6.0 || ^7.0 || ^8.40",
         "illuminate/support": "^6.0 || ^7.0 || ^8.0",
         "nesbot/carbon": "^2.31",
         "razorpay/razorpay": "^2.2",
-        "symfony/http-kernel": "^4.4 || ^5.0"
+        "symfony/http-kernel": "^4.4 || ^5.1.5"
     },
     "require-dev": {
         "illuminate/http": "^6.0 || ^7.0 || ^8.0",
